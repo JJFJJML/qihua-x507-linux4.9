@@ -1,0 +1,197 @@
+/*
+ * ov2718 mipi camera support.
+ */
+
+/{
+};
+
+/*--------------------------------------------------------------------------------
+vin (video input modules) configuration
+vind(x)_used: 0:disable 1:enable, main node for vin
+csi(x)_used: 0:disable 1:enable
+flash(x)_used: 0:disable 1:enable
+flash(x)_type: 0:FLASH_RELATING, 1:FLASH_EN_INDEPEND, 2:FLASH_POWER
+flash(x)_en: flash enable gpio, type = 0 of 1
+flash(x)_mode: flash mode gpio, type = 0 of 1
+flash(x)_flvdd: flash module io power handle string, pmu power supply, type = 2
+flash(x)_flvdd_vol: flash module io power voltage, pmu power supply, type = 2
+actuator(x)_used: 0:disable 1:enable
+actuator(x)_name: vcm name
+actuator(x)_slave: vcm iic slave address
+actuator(x)_af_pwdn: vcm power down gpio
+actuator(x)_afvdd: vcm power handle string, pmu power supply
+actuator(x)_afvdd_vol: vcm power voltage, pmu power supply
+sensor(x)_used: 0:disable 1:enable
+sensor(x)_isp_used 0:not use isp 1:use isp
+sensor(x)_fmt: 0:yuv 1:bayer raw rgb
+sensor(x)_stby_mode: 0:not shut down power at standby 1:shut down power at standby
+sensor(x)_vflip: flip in vertical direction 0:disable 1:enable
+sensor(x)_hflip: flip in horizontal direction 0:disable 1:enable
+sensor(x)_cameravdd-supply: camera module power handle string, pmu power supply
+sensor(x)_cameravdd_vol: camera module power voltage, pmu power supply
+sensor(x)_iovdd-supply: camera module io power handle string, pmu power supply
+sensor(x)_iovdd_vol: camera module io power voltage, pmu power supply
+sensor(x)_avdd-supply: camera module analog power handle string, pmu power supply
+sensor(x)_avdd_vol: camera module analog power voltage, pmu power supply
+sensor(x)_dvdd-supply: camera module core power handle string, pmu power supply
+sensor(x)_dvdd_vol: camera module core power voltage, pmu power supply
+sensor(x)_power_en: camera module power enable gpio
+sensor(x)_reset: camera module reset gpio
+sensor(x)_pwdn: camera module pwdn gpio
+fill voltage in uV, e.g. iovdd = 2.8V, sensorx_iovdd_vol = 2800000
+fill handle string as below:
+<&reg_bldo3>
+<&reg_bldo4>
+<&reg_bldo5>
+fill handle string "" when not using any pmu power supply
+vinc(x)_used: 0:disable 1:enable
+vinc(x)_sensor_list: use sensor list
+--------------------------------------------------------------------------------*/
+&soc {
+	vind0:vind@0 {
+		vind0_clk = <324000000>;
+		status = "okay";
+
+		csi_cci0:cci@0 {
+			status = "okay";
+		};
+		csi_cci1:cci@1 {
+			status = "okay";
+		};
+		csi0:csi@0 {
+			status = "okay";
+		};
+		csi1:csi@1 {
+			status = "okay";
+		};
+		actuator0:actuator@0 {
+			device_type = "actuator0";
+			actuator0_name = "ad5820_act";
+			actuator0_slave = <0x18>;
+			actuator0_af_pwdn = <>;
+			actuator0_afvdd = "afvcc-csi";
+			actuator0_afvdd_vol = <2800000>;
+			status = "disabled";
+		};
+		flash0:flash@0 {
+			device_type = "flash0";
+			flash0_type = <2>;
+			flash0_en = <>;
+			flash0_mode = <>;
+			flash0_flvdd = "";
+			flash0_flvdd_vol = <>;
+			device_id = <0>;
+			status = "disabled";
+		};
+		sensor0:sensor@0 {
+			device_type = "sensor0";
+			sensor0_mname = "ov2718_mipi";
+			sensor0_twi_cci_id = <0>;
+			sensor0_twi_addr = <0x6c>;
+			sensor0_mclk_id = <0>;
+			sensor0_pos = "rear";
+			sensor0_isp_used = <1>;
+			sensor0_fmt = <1>;
+			sensor0_stby_mode = <0>;
+			sensor0_vflip = <1>;
+			sensor0_hflip = <1>;
+			sensor0_iovdd-supply = <&reg_bldo1>;
+			sensor0_iovdd_vol = <1800000>;
+			sensor0_avdd-supply = <>;
+			sensor0_avdd_vol = <>;
+			sensor0_dvdd-supply = <>;
+			sensor0_dvdd_vol = <>;
+			sensor0_power_en = <>;
+			sensor0_reset = <&pio PC 12 1 0 1 0>;
+			sensor0_pwdn = <&pio PC 4 1 0 1 0>;
+			sensor0_sm_vs = <>;
+			status	= "okay";
+		};
+		sensor1:sensor@1 {
+			device_type = "sensor1";
+			sensor1_mname = "nvp6158";
+			sensor1_twi_cci_id = <1>;
+			sensor1_twi_addr = <0x64>;
+			sensor1_mclk_id = <1>;
+			sensor1_pos = "front";
+			sensor1_isp_used = <0>;
+			sensor1_fmt = <0>;
+			sensor1_stby_mode = <0>;
+			sensor1_vflip = <0>;
+			sensor1_hflip = <0>;
+			sensor1_cameravdd-supply = <&reg_bldo3>;
+			sensor1_cameravdd_vol = <3300000>;
+			sensor1_iovdd-supply = <&reg_aldo5>;
+			sensor1_iovdd_vol = <3300000>;
+			sensor1_avdd-supply = <&reg_bldo4>;
+			sensor1_avdd_vol = <1200000>;
+			sensor1_dvdd-supply = <&reg_bldo5>;
+			sensor1_dvdd_vol = <1200000>;
+			sensor1_power_en = <>;
+			sensor1_reset = <&pio PE 22 1 0 1 0>;
+			sensor1_pwdn = <&pio PA 7 1 0 1 0>;
+			sensor1_sm_vs = <>;
+			status	= "disabled";
+		};
+		vinc0:vinc@0 {
+			vinc0_csi_sel = <0>;
+			vinc0_mipi_sel = <0>;
+			vinc0_isp_sel = <0>;
+			vinc0_isp_tx_ch = <0>;
+			vinc0_rear_sensor_sel = <1>;
+			vinc0_front_sensor_sel = <1>;
+			vinc0_sensor_list = <0>;
+			status = "okay";
+		};
+		vinc1:vinc@1 {
+			vinc1_csi_sel = <0>;
+			vinc1_mipi_sel = <0>;
+			vinc1_isp_sel = <0>;
+			vinc1_isp_tx_ch = <1>;
+			vinc1_rear_sensor_sel = <1>;
+			vinc1_front_sensor_sel = <1>;
+			vinc1_sensor_list = <0>;
+			status = "okay";
+		};
+		vinc2:vinc@2 {
+			vinc2_csi_sel = <1>;
+			vinc2_mipi_sel = <0xff>;
+			vinc2_isp_sel = <1>;
+			vinc2_isp_tx_ch = <0>;
+			vinc2_rear_sensor_sel = <1>;
+			vinc2_front_sensor_sel = <1>;
+			vinc2_sensor_list = <0>;
+			status = "okay";
+		};
+		vinc3:vinc@3 {
+			vinc3_csi_sel = <1>;
+			vinc3_mipi_sel = <0xff>;
+			vinc3_isp_sel = <1>;
+			vinc3_isp_tx_ch = <1>;
+			vinc3_rear_sensor_sel = <1>;
+			vinc3_front_sensor_sel = <1>;
+			vinc3_sensor_list = <0>;
+			status = "okay";
+		};
+		vinc4:vinc@4 {
+			vinc4_csi_sel = <1>;
+			vinc4_mipi_sel = <0xff>;
+			vinc4_isp_sel = <1>;
+			vinc4_isp_tx_ch = <2>;
+			vinc4_rear_sensor_sel = <1>;
+			vinc4_front_sensor_sel = <1>;
+			vinc4_sensor_list = <0>;
+			status = "okay";
+		};
+		vinc5:vinc@5 {
+			vinc5_csi_sel = <1>;
+			vinc5_mipi_sel = <0xff>;
+			vinc5_isp_sel = <1>;
+			vinc5_isp_tx_ch = <3>;
+			vinc5_rear_sensor_sel = <1>;
+			vinc5_front_sensor_sel = <1>;
+			vinc5_sensor_list = <0>;
+			status = "okay";
+		};
+	};
+};

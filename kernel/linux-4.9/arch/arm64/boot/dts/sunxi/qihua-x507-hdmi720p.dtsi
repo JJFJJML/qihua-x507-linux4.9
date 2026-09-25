@@ -1,0 +1,39 @@
+/*
+ * only hdmi 720p60hz display.
+ */
+
+/{
+	ncs8801s {
+		status = "disabled";
+	};
+};
+
+&soc {
+	disp: disp@01000000 {
+		disp_init_enable         = <1>;
+		disp_mode                = <0>;
+
+		screen0_output_type      = <3>;
+		screen0_output_mode      = <5>;
+
+		screen1_output_type      = <3>;
+		screen1_output_mode      = <5>;
+
+		dev0_output_type         = <4>;
+		dev0_output_mode         = <5>;
+		dev0_screen_id           = <0>;
+		dev0_do_hpd              = <1>;
+
+		dev1_output_type         = <4>;
+		dev1_output_mode         = <5>;
+		dev1_screen_id           = <1>;
+		dev1_do_hpd              = <1>;
+
+		fb0_width	         = <1280>;
+		fb0_height	         = <720>;
+	};
+
+	lcd0: lcd0@01c0c000 {
+		lcd_used            = <0>;
+	};
+};

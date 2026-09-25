@@ -1,0 +1,1 @@
+LICHEE_KERN_DEFCONF := qihua_x507_linux_defconfig

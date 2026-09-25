@@ -1,0 +1,136 @@
+/*
+ * qihua-x507 board support.
+ */
+
+/dts-v1/;
+
+#include "qihua-x507-common.dtsi"
+//#include "qihua-x507-nvp6158.dtsi"
+//#include "qihua-x507-nvp6158xusb.dtsi"
+//#include "qihua-x507-ov2680.dtsi"
+#include "qihua-x507-ov5640.dtsi"
+//#include "qihua-x507-edp1920x1080.dtsi"
+//#include "qihua-x507-vga1280x800.dtsi"
+//#include "qihua-x507-lvds800x600.dtsi"
+//#include "qihua-x507-lvds1024x768.dtsi"
+//#include "qihua-x507-lvds1920x1080.dtsi"
+//#include "qihua-x507-lvdsEV101WXM-N80.dtsi"
+//#include "qihua-x507-hdmi720p.dtsi"
+//#include "qihua-x507-hdmi1080p.dtsi"
+//#include "qihua-x507-rgb800x480.dtsi"
+#include "qihua-x507-rgb1024x600.dtsi"
+
+
+&reg_usb_vbus {
+	compatible = "regulator-fixed";
+	gpio = <&pio PH 4 1 2 0 1>;
+	regulator-name = "usb-vbus";
+	regulator-min-microvolt = <5000000>;
+	regulator-max-microvolt = <5000000>;
+	enable-active-high;
+};
+
+&soc {
+	usbc0:usbc0@0 {
+		device_type		= "usbc0";
+		usb_port_type		= <0x2>;
+		usb_detect_type		= <0x1>;
+		usb_detect_mode		= <0x0>;
+		usb_id_gpio		= <&pio PE 16 0 1 0 0>;
+		usb_det_vbus_gpio	= <&pio PE 17 0 1 0 0>;
+		usb_regulator_io	= "nocare";
+		usb_wakeup_suspend	= <0x0>;
+		usb_luns		= <0x3>;
+		usb_serial_unique	= <0x0>;
+		usb_serial_number	= "20080411";
+		status			= "okay";
+	};
+
+	gmac0: eth@05020000 {
+		phy-mode = "rgmii";
+		phy-rst = <&pio PI 6 1 1 1 0>;
+		use_ephy25m = <0>;
+		tx-delay = <5>;
+		rx-delay = <17>;
+		gmac-power0-supply = <&reg_cldo1>;
+		gmac-power1-supply;
+		gmac-power2-supply;
+		gmac-power0-vol = <3300000>;
+		gmac-power1-vol;
+		gmac-power2-vol;
+		status = "okay";
+	};
+
+	gmac1: eth@05030000 {
+		phy-mode = "rmii";
+		phy-rst = <&pio PA 12 1 1 1 0>;
+		use_ephy25m = <0>;
+		tx-delay = <7>;
+		rx-delay = <0>;
+		gmac-power0-supply = <&reg_dcdc1>;
+		gmac-power1-supply;
+		gmac-power2-supply;
+		gmac-power0-vol = <3300000>;
+		gmac-power1-vol;
+		gmac-power2-vol;
+		status = "okay";
+	};
+
+	wlan:wlan {
+		compatible    = "allwinner,sunxi-wlan";
+		clocks        = <&clk_losc_out>;
+		pinctrl-0     = <&clk_losc_pins_a>;
+		pinctrl-names = "default";
+		wlan_busnum   = <0x1>;
+		wlan_power    = "axp858-dcdc1";
+		wlan_io_regulator = "axp858-aldo1";
+		wlan_regon    = <&pio PC 7 1 0xffffffff 0xffffffff 0>;
+		wlan_hostwake = <&pio PC 12 6 0xffffffff 0xffffffff 0>;
+		chip_en;
+		power_en;
+		status        = "okay";
+	};
+
+	bt:bt {
+		compatible    = "allwinner,sunxi-bt";
+		clocks        = <&clk_losc_out>;
+		bt_power      = "axp858-dcdc1";
+		bt_io_regulator = "axp858-aldo1";
+		bt_rst_n      = <&pio PC 4 1 0xffffffff 0xffffffff 0>;
+		status        = "okay";
+	};
+
+	btlpm:btlpm {
+		compatible  = "allwinner,sunxi-btlpm";
+		uart_index  = <0x1>;
+		bt_wake     = <&pio PC 3 1 0xffffffff 0xffffffff 1>;
+		bt_hostwake = <&pio PC 2 6 0xffffffff 0xffffffff 0>;
+		status      = "okay";
+	};
+
+	twi3: twi@0x05002c00 {
+		status = "okay";
+		ctp {
+			compatible = "allwinner,goodix";
+			reg = <0x5d>;
+			device_type = "ctp";
+			status = "okay";
+			ctp_twi_id = <0x3>;
+			ctp_twi_addr = <0x5d>;
+			ctp_screen_max_x = <1024>;
+			ctp_screen_max_y = <600>;
+			ctp_revert_x_flag = <0x0>;
+			ctp_revert_y_flag = <0x0>;
+			ctp_exchange_x_y_flag = <0x0>;
+			ctp_int_port = <&pio PH 9 6 0xffffffff 0xffffffff 0>;
+			ctp_wakeup = <&pio PH 10 1 0xffffffff 0xffffffff 1>;
+			ctp-supply = <&reg_dcdc1>;
+			ctp_power_ldo_vol = <3300>;
+		};
+	};
+
+	lcd0: lcd0@01c0c000 {
+		lcd_used         = <1>;
+		lcd_bl_en        = <&pio PE 22 1 0 3 1>;
+	};
+};

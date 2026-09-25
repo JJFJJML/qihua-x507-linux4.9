@@ -1,0 +1,26 @@
+#!/bin/sh
+
+case "$1" in
+  start)
+	echo "Starting insmod driver ..."
+
+	# tp
+	insmod /lib/modules/`uname -r`/gt9xxnew_ts.ko
+
+	# bt
+	insmod /lib/modules/`uname -r`/rtl_btlpm.ko
+
+	# wifi
+	insmod /lib/modules/`uname -r`/8723ds.ko
+
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

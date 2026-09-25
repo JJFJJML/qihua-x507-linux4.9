@@ -1,0 +1,20 @@
+/*
+ * qihua-x507 board support.
+ */
+
+/dts-v1/;
+
+#include "qihua-x507-common.dtsi"
+#include "qihua-x507-nvp6158.dtsi"
+//#include "qihua-x507-nvp6158xusb.dtsi"
+//#include "qihua-x507-ov2680.dtsi"
+//#include "qihua-x507-edp1920x1080.dtsi"
+//#include "qihua-x507-vga1280x800.dtsi"
+//#include "qihua-x507-lvds800x600.dtsi"
+//#include "qihua-x507-lvds1024x768.dtsi"
+//#include "qihua-x507-lvds1920x1080.dtsi"
+//#include "qihua-x507-lvdsEV101WXM-N80.dtsi"
+//#include "qihua-x507-hdmi1080p.dtsi"
+//#include "qihua-x507-rgb800x480.dtsi"
+#include "qihua-x507-rgb1024x600.dtsi"
+

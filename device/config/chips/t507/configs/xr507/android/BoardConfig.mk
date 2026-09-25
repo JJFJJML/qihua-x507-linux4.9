@@ -1,0 +1,1 @@
+LICHEE_KERN_DEFCONF:=qihua_xr507_android_defconfig

@@ -1,0 +1,5 @@
+config BK1088_FM
+	tristate "bk1088 i2c driver."
+	default y
+	help	
+		bk1088 driver

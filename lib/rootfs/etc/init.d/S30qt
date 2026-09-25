@@ -1,0 +1,28 @@
+#!/bin/sh
+
+case "$1" in
+  start)
+	echo "Starting qtdemo ..."
+	export QWS_MOUSE_PROTO="Tslib:/dev/input/event2"
+	#export QWS_DISPLAY="Transformed:Rot90"
+	(
+	if [ -e /usr/lib/qt/examples/svg/embedded/fluidlauncher ]; then
+		cd /usr/lib/qt/examples/svg/embedded/fluidlauncher/
+        	./fluidlauncher &
+	elif [ -e /usr/share/qt/demos/embedded/fluidlauncher ]; then
+		mtdev2tuio /dev/input/event2  osc.udp://127.0.0.1:3333/ &
+		cd /usr/share/qt/demos/embedded/fluidlauncher
+                ./fluidlauncher -qws &
+	fi
+	)
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
